@@ -1,0 +1,5 @@
+body{ background:#FDFAF4; color:#23301F; }
+.verde{ color:#2C5F3F; }
+.btn-verde{ background:#2C5F3F; color:#fff; }
+.btn-verde:hover{ background:#234C33; color:#fff; }
+.tarjeta{ background:#fff; border:1px solid #E8E4DA; border-radius:14px; padding:1.5rem; }
