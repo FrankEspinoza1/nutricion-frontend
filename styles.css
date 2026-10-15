@@ -87,8 +87,15 @@ a{ color:var(--verde); }
 
 .hero-figura{
   aspect-ratio:1; border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, var(--verde-claro), var(--verde) 70%);
+  /* El color solido se declara primero: si la fotografia no esta
+     disponible, el circulo conserva el verde en lugar de verse roto. */
+  background-color:var(--verde);
+  background-image:
+    linear-gradient(rgba(44,95,63,.50), rgba(30,66,41,.82)),
+    url('img/consulta.jpg');
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 20px 45px rgba(30,66,41,.20);
   display:flex; align-items:center; justify-content:center;
   color:#fff; text-align:center; padding:3rem;
 }
@@ -109,7 +116,15 @@ a{ color:var(--verde); }
 .servicio .duracion{ font-size:.85rem; color:var(--gris); }
 
 /* ---------- Franja de proceso ---------- */
-.franja{ background:var(--verde); color:#fff; }
+.franja{
+  color:#fff;
+  background-color:var(--verde);
+  background-image:
+    linear-gradient(rgba(30,66,41,.94), rgba(30,66,41,.94)),
+    url('img/alimentos.jpg');
+  background-size:cover;
+  background-position:center;
+}
 .franja .seccion{ padding-top:4rem; padding-bottom:4rem; }
 .franja .seccion-titulo{ color:#fff; }
 .franja .seccion-bajada{ color:#C9DDD0; }
