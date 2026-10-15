@@ -1,0 +1,109 @@
+/* =====================================================================
+   animaciones.css  -  Nutricion Sin Enredos
+   Proyecto Grupo 2 - Instituto Certus
+
+   Hoja de estilos de movimiento. Contiene las transiciones de la
+   interfaz, la aparicion progresiva de las secciones y el boton
+   flotante de retorno al inicio.
+
+   Se carga despues de styles.css, por lo que unicamente agrega reglas:
+   no reemplaza ninguna de las que ya existen. Si se quita el enlace a
+   este archivo, la pagina vuelve a verse exactamente igual que antes,
+   solo que sin movimiento.
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. Transiciones de las tarjetas
+
+   Las tarjetas de servicio se elevan ligeramente al pasar el cursor,
+   para dar la senal de que son elementos destacados.
+--------------------------------------------------------------------- */
+.servicio{
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.servicio:hover{
+  transform:translateY(-4px);
+  border-color:var(--verde-claro);
+  box-shadow:0 14px 30px rgba(35,48,31,.10);
+}
+
+.paso .num{
+  transition:transform .18s ease;
+}
+.paso:hover .num{
+  transform:scale(1.12);
+}
+
+
+/* ---------------------------------------------------------------------
+   2. Aparicion progresiva de las secciones
+
+   Las dos clases de abajo las agrega interacciones.js al desplazarse
+   por la pagina. Nunca se escriben en el HTML, y la razon es
+   importante: si el archivo de JavaScript no llegara a cargarse, las
+   secciones se mostrarian con normalidad en lugar de quedar
+   invisibles.
+--------------------------------------------------------------------- */
+.revelar{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.revelar.visible{
+  opacity:1;
+  transform:none;
+}
+
+
+/* ---------------------------------------------------------------------
+   3. Boton flotante de retorno al inicio
+
+   El elemento lo crea interacciones.js; aqui se define su apariencia y
+   la transicion con la que aparece y desaparece.
+--------------------------------------------------------------------- */
+.volver-arriba{
+  position:fixed; right:1.3rem; bottom:1.3rem; z-index:200;
+  width:46px; height:46px; border:0; border-radius:50%;
+  background:var(--verde); color:#fff;
+  font-size:1.25rem; line-height:1; cursor:pointer;
+  box-shadow:0 8px 20px rgba(30,66,41,.30);
+  opacity:0; visibility:hidden;
+  transition:opacity .22s ease, visibility .22s ease, background .15s ease;
+}
+.volver-arriba.visible{ opacity:1; visibility:visible; }
+.volver-arriba:hover{ background:var(--verde-oscuro); }
+
+
+/* ---------------------------------------------------------------------
+   4. Desplazamiento suave entre secciones
+
+   Hace que los enlaces del menu se desplacen con transicion en lugar
+   de saltar de golpe a la seccion.
+--------------------------------------------------------------------- */
+html{ scroll-behavior:smooth; }
+
+
+/* ---------------------------------------------------------------------
+   5. Ajustes para pantallas pequenas
+--------------------------------------------------------------------- */
+@media (max-width:860px){
+  .volver-arriba{ right:1rem; bottom:1rem; width:42px; height:42px; }
+}
+
+
+/* ---------------------------------------------------------------------
+   6. Respeto por la preferencia del usuario
+
+   Quienes configuran su sistema para reducir el movimiento (por mareo
+   o sensibilidad visual) reciben la pagina sin animaciones. Es una
+   pauta de accesibilidad web.
+--------------------------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  .servicio,
+  .paso .num,
+  .revelar,
+  .volver-arriba{ transition:none; }
+  .revelar{ opacity:1; transform:none; }
+}
