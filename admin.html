@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del nutricionista | Nutrición Sin Enredos</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===================== CABECERA ===================== -->
+<header class="admin-header">
+  <div class="nav-inner">
+    <a href="admin.html" class="marca">Nutrición <span>Sin Enredos</span></a>
+    <ul class="nav-links">
+      <li><a href="#citas">Citas</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="index.html">Ver la página pública</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="seccion" style="padding-top:2.5rem">
+
+  <h1 class="seccion-titulo">Panel de administración</h1>
+  <p class="seccion-bajada">Gestiona las citas reservadas por los pacientes y el catálogo de servicios publicado.</p>
+
+  <!-- ===================== RESUMEN ===================== -->
+  <div class="tarjetas-resumen" id="resumen">
+    <div class="tarjeta-dato"><strong>—</strong><span>Citas totales</span></div>
+    <div class="tarjeta-dato"><strong>—</strong><span>Pendientes</span></div>
+    <div class="tarjeta-dato"><strong>—</strong><span>Confirmadas</span></div>
+    <div class="tarjeta-dato"><strong>—</strong><span>Para hoy</span></div>
+  </div>
+
+  <!-- ===================== CITAS ===================== -->
+  <h2 style="font-size:1.3rem;margin-top:2.5rem" id="citas">Citas reservadas</h2>
+
+  <div class="filtros">
+    <button class="filtro activo" data-estado="">Todas</button>
+    <button class="filtro" data-estado="pendiente">Pendientes</button>
+    <button class="filtro" data-estado="confirmada">Confirmadas</button>
+    <button class="filtro" data-estado="cancelada">Canceladas</button>
+  </div>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha y hora</th><th>Paciente</th><th>Contacto</th>
+        <th>Servicio</th><th>Estado</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="tablaCitas">
+      <tr><td colspan="6" class="vacio">Cargando citas...</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===================== SERVICIOS ===================== -->
+  <h2 style="font-size:1.3rem;margin-top:3.5rem" id="servicios">Catálogo de servicios</h2>
+  <p style="color:var(--gris);font-size:.92rem;margin-top:-.3rem">Lo que se publique aquí es lo que verán los pacientes en la página.</p>
+
+  <div class="reserva-grid" style="margin-top:1.5rem;align-items:start">
+
+    <div class="panel">
+      <h3 id="tituloForm">Nuevo servicio</h3>
+      <input type="hidden" id="idServicio">
+
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Cambio corporal">
+      </div>
+      <div class="campo">
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" placeholder="Perder peso">
+      </div>
+      <div class="campo">
+        <label for="descripcion">Descripción</label>
+        <input type="text" id="descripcion" placeholder="Plan alimenticio personalizado">
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label for="precio">Precio (S/)</label>
+          <input type="number" id="precio" placeholder="120">
+        </div>
+        <div class="campo">
+          <label for="duracion">Duración (min)</label>
+          <input type="number" id="duracion" placeholder="45">
+        </div>
+      </div>
+
+      <button class="btn btn-verde" id="btnGuardar" style="width:100%">Guardar</button>
+      <button class="btn btn-borde" id="btnCancelar" style="width:100%;margin-top:.6rem;display:none">Cancelar edición</button>
+      <div class="aviso" id="avisoServicio"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Servicios publicados</h3>
+      <table class="tabla" style="border:0">
+        <thead>
+          <tr><th>Nombre</th><th>Precio</th><th>Duración</th><th></th></tr>
+        </thead>
+        <tbody id="tablaServicios">
+          <tr><td colspan="4" class="vacio">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<footer class="pie-pagina">
+  <div class="pie-legal">
+    Panel administrativo &middot; Nutrición Sin Enredos &middot; Grupo 2 &middot; Instituto Certus
+  </div>
+</footer>
+
+<script src="admin.js"></script>
+</body>
+</html>

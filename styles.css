@@ -1,5 +1,240 @@
-body{ background:#FDFAF4; color:#23301F; }
-.verde{ color:#2C5F3F; }
-.btn-verde{ background:#2C5F3F; color:#fff; }
-.btn-verde:hover{ background:#234C33; color:#fff; }
-.tarjeta{ background:#fff; border:1px solid #E8E4DA; border-radius:14px; padding:1.5rem; }
+/* =====================================================================
+   Nutricion Sin Enredos - Hoja de estilos
+   Grupo 2 - Evidencia 4
+   ===================================================================== */
+
+:root{
+  --verde:#2C5F3F;
+  --verde-oscuro:#1E4229;
+  --verde-claro:#5B8C6E;
+  --verde-suave:#EAF2EC;
+  --crema:#FDFAF4;
+  --arena:#E8E2D5;
+  --texto:#23301F;
+  --gris:#6B7268;
+  --amarillo:#E8B64C;
+  --rojo:#B3453A;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--crema);
+  color:var(--texto);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  line-height:1.6;
+}
+
+h1,h2,h3,h4{ letter-spacing:-.02em; margin-top:0; }
+a{ color:var(--verde); }
+
+/* ---------- Navegacion ---------- */
+.nav{
+  position:sticky; top:0; z-index:100;
+  background:rgba(253,250,244,.95);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--arena);
+}
+.nav-inner{
+  max-width:1100px; margin:0 auto; padding:.9rem 1.5rem;
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.marca{ font-weight:700; color:var(--verde); text-decoration:none; font-size:1.05rem; }
+.marca span{ font-weight:400; }
+.nav-links{ display:flex; gap:1.6rem; list-style:none; margin:0; padding:0; }
+.nav-links a{
+  text-decoration:none; color:var(--texto); font-size:.95rem;
+  padding-bottom:2px; border-bottom:2px solid transparent;
+}
+.nav-links a:hover{ border-bottom-color:var(--verde-claro); }
+.nav-toggle{ display:none; background:none; border:0; font-size:1.5rem; color:var(--verde); cursor:pointer; }
+
+/* ---------- Botones ---------- */
+.btn{
+  display:inline-block; border:0; border-radius:999px; cursor:pointer;
+  padding:.72rem 1.6rem; font-size:.95rem; font-weight:600;
+  text-decoration:none; transition:background .15s;
+}
+.btn-verde{ background:var(--verde); color:#fff; }
+.btn-verde:hover{ background:var(--verde-oscuro); color:#fff; }
+.btn-borde{ background:transparent; color:var(--verde); border:1.5px solid var(--verde); }
+.btn-borde:hover{ background:var(--verde-suave); }
+.btn-sm{ padding:.35rem .85rem; font-size:.82rem; }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* ---------- Secciones ---------- */
+.seccion{ max-width:1100px; margin:0 auto; padding:4.5rem 1.5rem; }
+.seccion-titulo{ font-size:1.9rem; margin-bottom:.4rem; }
+.seccion-bajada{ color:var(--gris); margin-top:0; margin-bottom:2.5rem; max-width:60ch; }
+
+/* ---------- Portada ---------- */
+.hero{ max-width:1100px; margin:0 auto; padding:4rem 1.5rem 3rem;
+  display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:center; }
+.hero h1{ font-size:3rem; line-height:1.1; margin-bottom:1rem; }
+.hero h1 em{ color:var(--verde); font-style:normal; }
+.hero p.lead{ font-size:1.15rem; margin-bottom:.8rem; }
+.hero p.sub{ color:var(--gris); margin-bottom:2rem; }
+.etiqueta{
+  display:inline-block; background:var(--verde-suave); color:var(--verde);
+  border-radius:999px; padding:.3rem 1rem; font-size:.82rem; font-weight:600;
+  margin-bottom:1.2rem;
+}
+.hero-acciones{ display:flex; gap:.8rem; flex-wrap:wrap; }
+.cifras{ display:flex; gap:2.5rem; margin-top:3rem; }
+.cifra strong{ display:block; font-size:1.6rem; color:var(--verde); }
+.cifra span{ font-size:.85rem; color:var(--gris); }
+
+.hero-figura{
+  aspect-ratio:1; border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--verde-claro), var(--verde) 70%);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; text-align:center; padding:3rem;
+}
+.hero-figura p{ font-size:1.1rem; font-style:italic; margin:0; opacity:.95; }
+
+/* ---------- Tarjetas de servicio ---------- */
+.grid-servicios{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
+.servicio{
+  background:#fff; border:1px solid var(--arena); border-radius:14px;
+  padding:1.6rem; display:flex; flex-direction:column;
+}
+.servicio h3{ font-size:1.15rem; margin-bottom:.3rem; }
+.servicio .cat{ font-size:.78rem; color:var(--verde); font-weight:600; margin-bottom:.6rem; }
+.servicio p{ color:var(--gris); font-size:.92rem; flex-grow:1; }
+.servicio .pie{ display:flex; justify-content:space-between; align-items:baseline;
+  border-top:1px solid var(--arena); padding-top:.9rem; margin-top:1rem; }
+.servicio .precio{ font-size:1.35rem; font-weight:700; color:var(--verde); }
+.servicio .duracion{ font-size:.85rem; color:var(--gris); }
+
+/* ---------- Franja de proceso ---------- */
+.franja{ background:var(--verde); color:#fff; }
+.franja .seccion{ padding-top:4rem; padding-bottom:4rem; }
+.franja .seccion-titulo{ color:#fff; }
+.franja .seccion-bajada{ color:#C9DDD0; }
+.pasos{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:2rem; }
+.paso .num{ font-size:2rem; font-weight:700; color:var(--amarillo); line-height:1; }
+.paso h4{ margin:.6rem 0 .4rem; font-size:1.05rem; }
+.paso p{ color:#C9DDD0; font-size:.9rem; margin:0; }
+
+/* ---------- Reserva ---------- */
+.reserva-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start; }
+.panel{ background:#fff; border:1px solid var(--arena); border-radius:14px; padding:1.8rem; }
+.panel h3{ font-size:1.1rem; margin-bottom:1.2rem; }
+
+.cal-cabecera{ display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; }
+.cal-mes{ font-weight:700; }
+.cal-nav{ background:none; border:1px solid var(--arena); border-radius:8px;
+  width:32px; height:32px; cursor:pointer; color:var(--verde); font-size:1.1rem; }
+.cal-nav:hover{ background:var(--verde-suave); }
+.cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+.cal-dia-nombre{ font-size:.7rem; color:var(--gris); text-align:center; padding-bottom:.4rem; }
+.cal-dia{
+  aspect-ratio:1; border:0; border-radius:9px; background:transparent;
+  font-size:.9rem; font-family:inherit; display:flex; align-items:center; justify-content:center;
+}
+.cal-dia.libre{ background:var(--verde-suave); color:var(--verde); font-weight:600; cursor:pointer; }
+.cal-dia.libre:hover{ background:#D5E7DA; }
+.cal-dia.cerrado{ color:#C4C4C4; cursor:not-allowed; }
+/* El dia seleccionado debe ganarle al estado :hover, por eso repite la clase */
+.cal-dia.activo.activo,
+.cal-dia.activo.activo:hover{ background:var(--verde); color:#fff; }
+
+.horarios{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem; }
+.hora{
+  border:1px solid var(--arena); background:#fff; border-radius:999px;
+  padding:.4rem 1rem; font-size:.88rem; font-family:inherit; cursor:pointer;
+}
+.hora:hover:not(:disabled){ border-color:var(--verde-claro); }
+.hora.activo{ background:var(--verde); color:#fff; border-color:var(--verde); }
+.hora:disabled{ color:#C4C4C4; text-decoration:line-through; cursor:not-allowed; background:#FAFAFA; }
+
+.campo{ margin-bottom:1rem; }
+.campo label{ display:block; font-size:.85rem; margin-bottom:.3rem; color:var(--gris); }
+.campo input, .campo select, .campo textarea{
+  width:100%; padding:.65rem .9rem; border:1px solid var(--arena);
+  border-radius:10px; background:#FAFBFA; font-family:inherit; font-size:.95rem;
+}
+.campo input:focus, .campo select:focus, .campo textarea:focus{
+  outline:0; border-color:var(--verde); background:#fff;
+}
+.fila-2{ display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+
+.resumen-cita{
+  background:var(--verde-suave); border-radius:10px; padding:.9rem 1.1rem;
+  font-size:.9rem; margin-bottom:1.2rem; color:var(--verde-oscuro);
+}
+.aviso{ font-size:.88rem; margin-top:.9rem; }
+.aviso.error{ color:var(--rojo); }
+.aviso.exito{ color:var(--verde); }
+
+/* ---------- Confirmacion ---------- */
+.confirmacion{ text-align:center; padding:2rem 1rem; }
+.confirmacion .check{
+  width:56px; height:56px; border-radius:50%; background:var(--verde);
+  color:#fff; font-size:1.8rem; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 1.2rem;
+}
+
+/* ---------- Pie ---------- */
+.pie-pagina{ background:var(--verde-oscuro); color:#C9DDD0; margin-top:3rem; }
+.pie-pagina .seccion{ padding:3rem 1.5rem; display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2rem; }
+.pie-pagina h4{ color:#fff; font-size:1rem; }
+.pie-pagina a{ color:#C9DDD0; text-decoration:none; display:block; font-size:.9rem; padding:.15rem 0; }
+.pie-pagina a:hover{ color:#fff; }
+.pie-legal{ border-top:1px solid #2F5C3C; text-align:center; padding:1.2rem;
+  font-size:.82rem; color:#9FBCA8; }
+
+/* ---------- Panel administrativo ---------- */
+.admin-header{ background:var(--verde); color:#fff; padding:1.1rem 0; }
+.admin-header .nav-inner{ padding-top:0; padding-bottom:0; }
+.admin-header .marca{ color:#fff; }
+.admin-header .nav-links a{ color:#C9DDD0; }
+.admin-header .nav-links a:hover{ color:#fff; border-bottom-color:#fff; }
+
+.tarjetas-resumen{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:1rem; margin-bottom:2rem; }
+.tarjeta-dato{ background:#fff; border:1px solid var(--arena); border-radius:12px; padding:1.2rem 1.4rem; }
+.tarjeta-dato strong{ display:block; font-size:2rem; color:var(--verde); line-height:1.1; }
+.tarjeta-dato span{ font-size:.85rem; color:var(--gris); }
+
+.filtros{ display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+.filtro{ border:1px solid var(--arena); background:#fff; border-radius:999px;
+  padding:.35rem 1rem; font-size:.85rem; font-family:inherit; cursor:pointer; }
+.filtro.activo{ background:var(--verde); color:#fff; border-color:var(--verde); }
+
+.tabla{ width:100%; border-collapse:collapse; background:#fff;
+  border:1px solid var(--arena); border-radius:12px; overflow:hidden; }
+.tabla th{ background:#F6F4EF; text-align:left; font-size:.78rem; color:var(--gris);
+  text-transform:uppercase; letter-spacing:.04em; padding:.8rem 1rem; }
+.tabla td{ padding:.85rem 1rem; border-top:1px solid var(--arena); font-size:.92rem; vertical-align:middle; }
+.tabla tr:hover td{ background:#FCFBF8; }
+
+.estado{ display:inline-block; border-radius:999px; padding:.18rem .7rem; font-size:.78rem; font-weight:600; }
+.estado.pendiente{ background:#FCF2DC; color:#8A6410; }
+.estado.confirmada{ background:var(--verde-suave); color:var(--verde); }
+.estado.cancelada{ background:#F7E4E2; color:var(--rojo); }
+
+.vacio{ text-align:center; color:var(--gris); padding:2.5rem 1rem; font-size:.92rem; }
+
+/* ---------- Adaptacion a pantallas pequenas ---------- */
+@media (max-width:860px){
+  .nav-inner{ padding:.8rem 1.2rem; }
+  .marca{ font-size:1rem; white-space:nowrap; }
+  /* El menu desplegable ya incluye el enlace de reserva */
+  .nav .btn-verde{ display:none; }
+  .hero{ grid-template-columns:1fr; gap:2rem; padding-top:2.5rem; }
+  .hero h1{ font-size:2.2rem; }
+  .hero-figura{ max-width:260px; margin:0 auto; padding:2rem; }
+  .reserva-grid{ grid-template-columns:1fr; }
+  .nav-links{ display:none; }
+  .nav-links.abierto{
+    display:flex; flex-direction:column; position:absolute; top:100%; left:0; right:0;
+    background:var(--crema); border-bottom:1px solid var(--arena); padding:1rem 1.5rem; gap:.8rem;
+  }
+  .nav-toggle{ display:block; }
+  .seccion{ padding:3rem 1.5rem; }
+  .cifras{ gap:1.5rem; }
+  .tabla{ display:block; overflow-x:auto; }
+}

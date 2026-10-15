@@ -1,147 +1,314 @@
 /* =====================================================================
-   Componente FRONTEND de Nutricion Sin Enredos
+   Componente FRONTEND - Pagina publica
+   Proyecto Nutricion Sin Enredos - Grupo 2
 
-   Este componente se despliega por separado del backend. Por eso la
-   direccion de la API ya no es relativa: apunta al dominio completo
-   del componente backend alojado en Render.
+   Este componente se ejecuta por completo en el navegador del usuario y
+   consume la API del componente backend, alojado en otro dominio.
    ===================================================================== */
 
 const API_BASE = 'https://nutricion-sin-enredos.onrender.com';
-const API = API_BASE + '/api/servicios';
+const API_SERVICIOS = API_BASE + '/api/servicios';
+const API_CITAS     = API_BASE + '/api/citas';
 
-const tabla       = document.getElementById('tabla');
-const aviso       = document.getElementById('aviso');
-const tituloForm  = document.getElementById('tituloForm');
-const btnGuardar  = document.getElementById('btnGuardar');
-const btnCancelar = document.getElementById('btnCancelar');
+// Numero de WhatsApp del consultorio (sin + ni espacios)
+const WHATSAPP = '51987654321';
 
-const campos = {
-  id:          document.getElementById('idServicio'),
-  nombre:      document.getElementById('nombre'),
-  categoria:   document.getElementById('categoria'),
-  descripcion: document.getElementById('descripcion'),
-  precio:      document.getElementById('precio'),
-  duracion:    document.getElementById('duracion')
-};
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+               'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+let diasAtencion  = [1,2,3,4,5,6];
+let mesVisible    = new Date();
+let fechaElegida  = null;
+let horaElegida   = null;
+let servicios     = [];
+
+/* ---------------------------------------------------------------------
+   Utilidades
+--------------------------------------------------------------------- */
+
+// Devuelve la fecha en formato AAAA-MM-DD sin desplazamiento de zona horaria
+function aISO(fecha) {
+  const m = String(fecha.getMonth() + 1).padStart(2, '0');
+  const d = String(fecha.getDate()).padStart(2, '0');
+  return `${fecha.getFullYear()}-${m}-${d}`;
+}
+
+function textoFecha(fecha) {
+  return `${fecha.getDate()} de ${MESES[fecha.getMonth()].toLowerCase()} de ${fecha.getFullYear()}`;
+}
 
 function mostrarAviso(texto, esError) {
-  aviso.className = 'small mt-3 ' + (esError ? 'text-danger' : 'text-success');
+  const aviso = document.getElementById('aviso');
+  aviso.className = 'aviso ' + (esError ? 'error' : 'exito');
   aviso.textContent = texto;
-  setTimeout(() => { aviso.textContent = ''; }, 3000);
+  if (!esError) setTimeout(() => { aviso.textContent = ''; }, 4000);
 }
 
-function limpiarFormulario() {
-  campos.id.value = '';
-  campos.nombre.value = '';
-  campos.categoria.value = '';
-  campos.descripcion.value = '';
-  campos.precio.value = '';
-  campos.duracion.value = '';
-  tituloForm.textContent = 'Nuevo servicio';
-  btnGuardar.textContent = 'Guardar';
-  btnCancelar.classList.add('d-none');
-}
-
-// LEER: carga la lista y la dibuja en la tabla
+/* ---------------------------------------------------------------------
+   Catalogo de servicios
+--------------------------------------------------------------------- */
 async function cargarServicios() {
-  try {
-    const respuesta = await fetch(API);
-    const servicios = await respuesta.json();
+  const lista = document.getElementById('listaServicios');
+  const select = document.getElementById('servicio');
 
-    if (servicios.length === 0) {
-      tabla.innerHTML = '<tr><td colspan="6" class="text-secondary small">Todavía no hay servicios registrados.</td></tr>';
+  try {
+    const respuesta = await fetch(API_SERVICIOS);
+    servicios = await respuesta.json();
+
+    if (!servicios.length) {
+      lista.innerHTML = '<p class="vacio">Todavía no hay servicios publicados.</p>';
+      select.innerHTML = '<option value="">No hay servicios disponibles</option>';
       return;
     }
 
-    tabla.innerHTML = servicios.map(s => `
-      <tr>
-        <td class="fw-semibold">${s.nombre}</td>
-        <td class="small text-secondary">${s.categoria || '-'}</td>
-        <td class="small text-secondary">${s.descripcion || '-'}</td>
-        <td>S/ ${s.precio}</td>
-        <td>${s.duracion} min</td>
-        <td class="text-end">
-          <button class="btn btn-sm btn-outline-secondary" onclick="editarServicio('${s._id}')">Editar</button>
-          <button class="btn btn-sm btn-outline-danger" onclick="eliminarServicio('${s._id}')">Eliminar</button>
-        </td>
-      </tr>
+    lista.innerHTML = servicios.map(s => `
+      <article class="servicio">
+        <div class="cat">${s.categoria || 'General'}</div>
+        <h3>${s.nombre}</h3>
+        <p>${s.descripcion || 'Consulta nutricional personalizada.'}</p>
+        <div class="pie">
+          <span class="precio">S/ ${s.precio}</span>
+          <span class="duracion">${s.duracion} min</span>
+        </div>
+      </article>
     `).join('');
+
+    select.innerHTML = '<option value="">Selecciona un servicio</option>' +
+      servicios.map(s => `<option value="${s._id}">${s.nombre} — S/ ${s.precio}</option>`).join('');
+
   } catch (error) {
-    tabla.innerHTML = '<tr><td colspan="6" class="text-danger small">No se pudo conectar con el servidor de aplicación.</td></tr>';
+    lista.innerHTML = '<p class="vacio">No se pudo conectar con el servidor. Intenta recargar la página.</p>';
+    select.innerHTML = '<option value="">Sin conexión</option>';
   }
 }
 
-// CREAR o ACTUALIZAR
-btnGuardar.onclick = async () => {
-  const datos = {
-    nombre:      campos.nombre.value.trim(),
-    categoria:   campos.categoria.value.trim(),
-    descripcion: campos.descripcion.value.trim(),
-    precio:      Number(campos.precio.value),
-    duracion:    Number(campos.duracion.value)
-  };
-
-  if (!datos.nombre || !datos.precio || !datos.duracion) {
-    mostrarAviso('Completa nombre, precio y duración.', true);
-    return;
+/* ---------------------------------------------------------------------
+   Configuracion de la agenda
+--------------------------------------------------------------------- */
+async function cargarConfiguracion() {
+  try {
+    const respuesta = await fetch(API_CITAS + '/configuracion');
+    const config = await respuesta.json();
+    if (Array.isArray(config.diasAtencion)) diasAtencion = config.diasAtencion;
+  } catch (error) {
+    // Si no responde, se mantienen los valores por defecto
   }
+  dibujarCalendario();
+}
 
-  const id = campos.id.value;
-  const url = id ? API + '/' + id : API;
-  const metodo = id ? 'PUT' : 'POST';
+/* ---------------------------------------------------------------------
+   Calendario
+--------------------------------------------------------------------- */
+function dibujarCalendario() {
+  const cal = document.getElementById('calendario');
+  cal.innerHTML = '';
+
+  document.getElementById('mesActual').textContent =
+    MESES[mesVisible.getMonth()] + ' ' + mesVisible.getFullYear();
+
+  const primerDia = new Date(mesVisible.getFullYear(), mesVisible.getMonth(), 1).getDay();
+  const totalDias = new Date(mesVisible.getFullYear(), mesVisible.getMonth() + 1, 0).getDate();
+
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < primerDia; i++) cal.appendChild(document.createElement('div'));
+
+  for (let d = 1; d <= totalDias; d++) {
+    const fecha = new Date(mesVisible.getFullYear(), mesVisible.getMonth(), d);
+    const btn = document.createElement('button');
+    btn.className = 'cal-dia';
+    btn.textContent = d;
+
+    const esPasado = fecha < hoy;
+    const seAtiende = diasAtencion.includes(fecha.getDay());
+
+    if (!esPasado && seAtiende) {
+      btn.classList.add('libre');
+      btn.onclick = () => {
+        fechaElegida = fecha;
+        horaElegida = null;
+        dibujarCalendario();
+        cargarHorarios(aISO(fecha));
+        actualizarResumen();
+      };
+    } else {
+      btn.classList.add('cerrado');
+      btn.disabled = true;
+    }
+
+    if (fechaElegida && fecha.toDateString() === fechaElegida.toDateString()) {
+      btn.classList.add('activo');
+    }
+
+    cal.appendChild(btn);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Horarios disponibles de un dia
+--------------------------------------------------------------------- */
+async function cargarHorarios(fechaISO) {
+  const cont = document.getElementById('horarios');
+  cont.innerHTML = '<span style="font-size:.88rem;color:var(--gris)">Consultando disponibilidad...</span>';
 
   try {
-    const respuesta = await fetch(url, {
-      method: metodo,
+    const respuesta = await fetch(API_CITAS + '/disponibilidad/' + fechaISO);
+    const datos = await respuesta.json();
+
+    if (!datos.atiende) {
+      cont.innerHTML = `<span style="font-size:.88rem;color:var(--gris)">${datos.motivo || 'Ese día no hay atención.'}</span>`;
+      return;
+    }
+
+    cont.innerHTML = '';
+    datos.horarios.forEach(h => {
+      const btn = document.createElement('button');
+      btn.className = 'hora' + (horaElegida === h.hora ? ' activo' : '');
+      btn.textContent = h.hora;
+      btn.disabled = !h.disponible;
+      if (!h.disponible) btn.title = 'Horario ya reservado';
+      btn.onclick = () => {
+        horaElegida = h.hora;
+        cargarHorarios(fechaISO);
+        actualizarResumen();
+      };
+      cont.appendChild(btn);
+    });
+
+  } catch (error) {
+    cont.innerHTML = '<span style="font-size:.88rem;color:var(--rojo)">No se pudo consultar la disponibilidad.</span>';
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Resumen de la seleccion
+--------------------------------------------------------------------- */
+function actualizarResumen() {
+  const r = document.getElementById('resumenCita');
+  if (fechaElegida && horaElegida) {
+    r.textContent = `Cita para el ${textoFecha(fechaElegida)} a las ${horaElegida}.`;
+  } else if (fechaElegida) {
+    r.textContent = `Fecha: ${textoFecha(fechaElegida)}. Ahora elige un horario.`;
+  } else {
+    r.textContent = 'Aún no has seleccionado fecha ni horario.';
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Registro de la cita
+--------------------------------------------------------------------- */
+document.getElementById('btnReservar').onclick = async () => {
+  const boton = document.getElementById('btnReservar');
+
+  const datos = {
+    servicio: document.getElementById('servicio').value,
+    paciente: document.getElementById('paciente').value.trim(),
+    telefono: document.getElementById('telefono').value.trim(),
+    correo:   document.getElementById('correo').value.trim(),
+    motivo:   document.getElementById('motivo').value.trim(),
+    fecha:    fechaElegida ? aISO(fechaElegida) : '',
+    hora:     horaElegida || ''
+  };
+
+  if (!datos.fecha || !datos.hora) {
+    return mostrarAviso('Selecciona una fecha y un horario en el calendario.', true);
+  }
+  if (!datos.servicio) {
+    return mostrarAviso('Elige el servicio que deseas reservar.', true);
+  }
+  if (!datos.paciente || !datos.telefono || !datos.correo) {
+    return mostrarAviso('Completa tu nombre, WhatsApp y correo.', true);
+  }
+  if (!/^\S+@\S+\.\S+$/.test(datos.correo)) {
+    return mostrarAviso('El correo electrónico no tiene un formato válido.', true);
+  }
+
+  boton.disabled = true;
+  boton.textContent = 'Registrando...';
+
+  try {
+    const respuesta = await fetch(API_CITAS, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datos)
     });
+    const resultado = await respuesta.json();
 
-    if (!respuesta.ok) throw new Error();
+    if (!respuesta.ok) {
+      // 409 significa que alguien tomó ese horario mientras se completaba el formulario
+      if (respuesta.status === 409) {
+        cargarHorarios(datos.fecha);
+        horaElegida = null;
+        actualizarResumen();
+      }
+      throw new Error(resultado.mensaje || 'No se pudo registrar la cita');
+    }
 
-    mostrarAviso(id ? 'Servicio actualizado.' : 'Servicio creado.', false);
-    limpiarFormulario();
-    cargarServicios();
+    mostrarConfirmacion(resultado);
+
   } catch (error) {
-    mostrarAviso('No se pudo guardar el servicio.', true);
+    mostrarAviso(error.message, true);
+  } finally {
+    boton.disabled = false;
+    boton.textContent = 'Confirmar reserva';
   }
 };
 
-// Carga un servicio en el formulario para editarlo
-async function editarServicio(id) {
-  try {
-    const respuesta = await fetch(API + '/' + id);
-    const s = await respuesta.json();
+/* ---------------------------------------------------------------------
+   Pantalla de confirmacion
+--------------------------------------------------------------------- */
+function mostrarConfirmacion(cita) {
+  document.getElementById('panelFormulario').style.display = 'none';
+  document.getElementById('panelConfirmacion').style.display = 'block';
 
-    campos.id.value = s._id;
-    campos.nombre.value = s.nombre;
-    campos.categoria.value = s.categoria;
-    campos.descripcion.value = s.descripcion;
-    campos.precio.value = s.precio;
-    campos.duracion.value = s.duracion;
+  const nombreServicio = cita.servicio?.nombre || 'Consulta';
+  document.getElementById('detalleConfirmacion').textContent =
+    `${nombreServicio} — ${textoFecha(new Date(cita.fecha + 'T12:00:00'))} a las ${cita.hora}.`;
 
-    tituloForm.textContent = 'Editar servicio';
-    btnGuardar.textContent = 'Actualizar';
-    btnCancelar.classList.remove('d-none');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch (error) {
-    mostrarAviso('No se pudo cargar el servicio.', true);
-  }
+  const texto =
+    'Hola, acabo de reservar una cita.%0A' +
+    `Nombre: ${cita.paciente}%0A` +
+    `Servicio: ${nombreServicio}%0A` +
+    `Fecha: ${cita.fecha}%0A` +
+    `Hora: ${cita.hora}`;
+
+  document.getElementById('btnWhatsapp').href = `https://wa.me/${WHATSAPP}?text=${texto}`;
 }
 
-// ELIMINAR
-async function eliminarServicio(id) {
-  if (!confirm('¿Eliminar este servicio?')) return;
-  try {
-    const respuesta = await fetch(API + '/' + id, { method: 'DELETE' });
-    if (!respuesta.ok) throw new Error();
-    mostrarAviso('Servicio eliminado.', false);
-    cargarServicios();
-  } catch (error) {
-    mostrarAviso('No se pudo eliminar el servicio.', true);
-  }
-}
+document.getElementById('btnNuevaReserva').onclick = () => {
+  document.getElementById('panelConfirmacion').style.display = 'none';
+  document.getElementById('panelFormulario').style.display = 'block';
 
-btnCancelar.onclick = limpiarFormulario;
+  ['paciente','telefono','correo','motivo'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('servicio').value = '';
+  fechaElegida = null;
+  horaElegida = null;
+  dibujarCalendario();
+  actualizarResumen();
+  document.getElementById('horarios').innerHTML =
+    '<span style="font-size:.88rem;color:var(--gris)">Selecciona primero una fecha.</span>';
+};
 
+/* ---------------------------------------------------------------------
+   Navegacion del calendario y del menu
+--------------------------------------------------------------------- */
+document.getElementById('mesAnterior').onclick = () => {
+  mesVisible = new Date(mesVisible.getFullYear(), mesVisible.getMonth() - 1, 1);
+  dibujarCalendario();
+};
+document.getElementById('mesSiguiente').onclick = () => {
+  mesVisible = new Date(mesVisible.getFullYear(), mesVisible.getMonth() + 1, 1);
+  dibujarCalendario();
+};
+document.getElementById('navToggle').onclick = () => {
+  document.getElementById('menu').classList.toggle('abierto');
+};
+document.getElementById('enlaceWhatsappPie').href = `https://wa.me/${WHATSAPP}`;
+
+/* ---------------------------------------------------------------------
+   Arranque
+--------------------------------------------------------------------- */
 cargarServicios();
+cargarConfiguracion();
+actualizarResumen();

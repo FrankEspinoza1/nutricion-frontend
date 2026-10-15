@@ -3,76 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Servicios | Nutrición Sin Enredos</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>Nutrición Sin Enredos | Asesoría nutricional con reserva en línea</title>
+<meta name="description" content="Reserva tu consulta nutricional en línea. Planes personalizados, sin dietas extremas y sin complicaciones.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="container py-5">
-  <h1 class="h3 verde mb-1">Gestión de servicios</h1>
-  <p class="text-secondary mb-4">Nutrición Sin Enredos &middot; Grupo 2 &middot; Evidencia 3</p>
+<!-- ===================== NAVEGACIÓN ===================== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="marca">Nutrición <span>Sin Enredos</span></a>
+    <ul class="nav-links" id="menu">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#proceso">Cómo funciona</a></li>
+      <li><a href="#reserva">Reservar</a></li>
+    </ul>
+    <a href="#reserva" class="btn btn-verde btn-sm">Agendar cita</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">&#9776;</button>
+  </div>
+</nav>
 
-  <div class="row g-4">
+<!-- ===================== PORTADA ===================== -->
+<header class="hero" id="inicio">
+  <div>
+    <span class="etiqueta">Nutricionista certificada</span>
+    <h1>Come bien <em>sin enredarte</em> en el intento</h1>
+    <p class="lead">Planes de alimentación que se adaptan a tu rutina, no al revés.</p>
+    <p class="sub">Reserva tu consulta en línea, elige el horario que te acomode y empieza a construir hábitos que puedas sostener en el tiempo.</p>
+    <div class="hero-acciones">
+      <a href="#reserva" class="btn btn-verde">Reservar mi consulta</a>
+      <a href="#servicios" class="btn btn-borde">Ver los servicios</a>
+    </div>
+    <div class="cifras">
+      <div class="cifra"><strong>100%</strong><span>Personalizado</span></div>
+      <div class="cifra"><strong>Sin</strong><span>Dietas extremas</span></div>
+      <div class="cifra"><strong>24/7</strong><span>Reserva en línea</span></div>
+    </div>
+  </div>
+  <div class="hero-figura">
+    <p>“Comer bien no tiene que ser complicado. Tiene que ser tuyo.”</p>
+  </div>
+</header>
 
-    <!-- Formulario: crear y editar -->
-    <div class="col-lg-4">
-      <div class="tarjeta">
-        <h2 class="h6 mb-3" id="tituloForm">Nuevo servicio</h2>
+<!-- ===================== SOBRE MÍ ===================== -->
+<section class="seccion" id="sobre-mi">
+  <h2 class="seccion-titulo">Sobre mí</h2>
+  <p class="seccion-bajada">Soy nutricionista y acompaño a personas que quieren cambiar su alimentación sin volverla una obligación imposible de cumplir.</p>
+  <div class="grid-servicios">
+    <div class="servicio">
+      <h3>Mi enfoque</h3>
+      <p>Trabajo con lo que ya comes y con el tiempo que realmente tienes. No entrego dietas genéricas: construimos un plan a partir de tu rutina, tus gustos y tu presupuesto.</p>
+    </div>
+    <div class="servicio">
+      <h3>Para quién es</h3>
+      <p>Para quien quiere bajar de peso, ganar masa muscular o simplemente ordenar su alimentación, y ya se cansó de empezar dietas que abandona a las dos semanas.</p>
+    </div>
+    <div class="servicio">
+      <h3>Cómo acompaño</h3>
+      <p>Cada consulta incluye evaluación, plan escrito y seguimiento. Si algo no te funciona, lo ajustamos. El objetivo es que el plan sobreviva a tu vida real.</p>
+    </div>
+  </div>
+</section>
 
-        <input type="hidden" id="idServicio">
+<!-- ===================== SERVICIOS ===================== -->
+<section class="seccion" id="servicios">
+  <h2 class="seccion-titulo">Servicios disponibles</h2>
+  <p class="seccion-bajada">Elige el que mejor se ajuste a tu objetivo. Todos incluyen plan escrito y pautas para seguirlo.</p>
+  <div class="grid-servicios" id="listaServicios">
+    <p class="vacio">Cargando servicios...</p>
+  </div>
+</section>
 
-        <div class="mb-3">
-          <label class="form-label small">Nombre</label>
-          <input type="text" id="nombre" class="form-control" placeholder="Cambio corporal">
-        </div>
-        <div class="mb-3">
-          <label class="form-label small">Categoría</label>
-          <input type="text" id="categoria" class="form-control" placeholder="Plan alimenticio">
-        </div>
-        <div class="mb-3">
-          <label class="form-label small">Descripción</label>
-          <input type="text" id="descripcion" class="form-control" placeholder="Plan personalizado">
-        </div>
-        <div class="row g-2 mb-3">
-          <div class="col-6">
-            <label class="form-label small">Precio (S/)</label>
-            <input type="number" id="precio" class="form-control" placeholder="120">
-          </div>
-          <div class="col-6">
-            <label class="form-label small">Duración (min)</label>
-            <input type="number" id="duracion" class="form-control" placeholder="45">
-          </div>
-        </div>
+<!-- ===================== PROCESO ===================== -->
+<div class="franja" id="proceso">
+  <section class="seccion">
+    <h2 class="seccion-titulo">Cómo funciona</h2>
+    <p class="seccion-bajada">Cuatro pasos y listo. Sin llamadas ni mensajes de ida y vuelta.</p>
+    <div class="pasos">
+      <div class="paso">
+        <div class="num">01</div>
+        <h4>Elige tu servicio</h4>
+        <p>Revisa los planes disponibles y escoge el que va con tu objetivo.</p>
+      </div>
+      <div class="paso">
+        <div class="num">02</div>
+        <h4>Reserva tu horario</h4>
+        <p>El calendario te muestra solo los días y horas que siguen libres.</p>
+      </div>
+      <div class="paso">
+        <div class="num">03</div>
+        <h4>Confirma por WhatsApp</h4>
+        <p>Recibes el detalle de tu cita y coordinamos cualquier duda.</p>
+      </div>
+      <div class="paso">
+        <div class="num">04</div>
+        <h4>Nos vemos en consulta</h4>
+        <p>Llegas, conversamos y sales con tu plan listo para empezar.</p>
+      </div>
+    </div>
+  </section>
+</div>
 
-        <button class="btn btn-verde w-100" id="btnGuardar">Guardar</button>
-        <button class="btn btn-outline-secondary w-100 mt-2 d-none" id="btnCancelar">Cancelar</button>
+<!-- ===================== RESERVA ===================== -->
+<section class="seccion" id="reserva">
+  <h2 class="seccion-titulo">Reserva tu cita</h2>
+  <p class="seccion-bajada">Selecciona una fecha en el calendario, elige el horario y completa tus datos.</p>
 
-        <div id="aviso" class="small mt-3"></div>
+  <div class="reserva-grid">
+
+    <!-- Calendario -->
+    <div class="panel">
+      <div class="cal-cabecera">
+        <button class="cal-nav" id="mesAnterior" aria-label="Mes anterior">&lsaquo;</button>
+        <span class="cal-mes" id="mesActual"></span>
+        <button class="cal-nav" id="mesSiguiente" aria-label="Mes siguiente">&rsaquo;</button>
+      </div>
+
+      <div class="cal-grid">
+        <div class="cal-dia-nombre">DOM</div><div class="cal-dia-nombre">LUN</div>
+        <div class="cal-dia-nombre">MAR</div><div class="cal-dia-nombre">MIÉ</div>
+        <div class="cal-dia-nombre">JUE</div><div class="cal-dia-nombre">VIE</div>
+        <div class="cal-dia-nombre">SÁB</div>
+      </div>
+      <div class="cal-grid" id="calendario"></div>
+
+      <h3 style="margin-top:1.8rem;font-size:.95rem;">Horarios disponibles</h3>
+      <div class="horarios" id="horarios">
+        <span style="font-size:.88rem;color:var(--gris);">Selecciona primero una fecha.</span>
       </div>
     </div>
 
-    <!-- Tabla: listar, editar y eliminar -->
-    <div class="col-lg-8">
-      <div class="tarjeta">
-        <h2 class="h6 mb-3">Servicios registrados</h2>
-        <div class="table-responsive">
-          <table class="table align-middle">
-            <thead>
-              <tr class="small text-secondary">
-                <th>Nombre</th><th>Categoría</th><th>Descripción</th><th>Precio</th><th>Duración</th><th></th>
-              </tr>
-            </thead>
-            <tbody id="tabla">
-              <tr><td colspan="6" class="text-secondary small">Cargando...</td></tr>
-            </tbody>
-          </table>
+    <!-- Formulario -->
+    <div class="panel" id="panelFormulario">
+      <h3>Completa tus datos</h3>
+      <div class="resumen-cita" id="resumenCita">Aún no has seleccionado fecha ni horario.</div>
+
+      <div class="campo">
+        <label for="servicio">Servicio</label>
+        <select id="servicio"><option value="">Cargando...</option></select>
+      </div>
+      <div class="campo">
+        <label for="paciente">Nombre completo</label>
+        <input type="text" id="paciente" placeholder="Tu nombre y apellido">
+      </div>
+      <div class="fila-2">
+        <div class="campo">
+          <label for="telefono">WhatsApp</label>
+          <input type="tel" id="telefono" placeholder="987 654 321">
         </div>
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" placeholder="tu@correo.com">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="motivo">Motivo de la consulta <span style="opacity:.6">(opcional)</span></label>
+        <textarea id="motivo" rows="2" placeholder="Cuéntanos brevemente qué te gustaría trabajar"></textarea>
+      </div>
+
+      <button class="btn btn-verde" id="btnReservar" style="width:100%">Confirmar reserva</button>
+      <div class="aviso" id="aviso"></div>
+    </div>
+
+    <!-- Confirmación (oculta hasta reservar) -->
+    <div class="panel" id="panelConfirmacion" style="display:none">
+      <div class="confirmacion">
+        <div class="check">&#10003;</div>
+        <h3>¡Tu cita quedó registrada!</h3>
+        <p id="detalleConfirmacion" style="color:var(--gris)"></p>
+        <a href="#" class="btn btn-verde" id="btnWhatsapp" target="_blank" rel="noopener">Enviar confirmación por WhatsApp</a>
+        <p style="margin-top:1.2rem">
+          <button class="btn btn-borde btn-sm" id="btnNuevaReserva">Reservar otra cita</button>
+        </p>
       </div>
     </div>
 
   </div>
-</div>
+</section>
+
+<!-- ===================== PIE ===================== -->
+<footer class="pie-pagina">
+  <div class="seccion">
+    <div>
+      <h4>Nutrición Sin Enredos</h4>
+      <p style="font-size:.9rem">Asesoría nutricional personalizada con reserva de citas en línea.</p>
+    </div>
+    <div>
+      <h4>Navegación</h4>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#reserva">Reservar cita</a>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <a href="#" id="enlaceWhatsappPie">WhatsApp</a>
+      <a href="mailto:contacto@nutricionsinenredos.pe">contacto@nutricionsinenredos.pe</a>
+    </div>
+    <div>
+      <h4>Administración</h4>
+      <a href="admin.html">Panel del nutricionista</a>
+    </div>
+  </div>
+  <div class="pie-legal">
+    Proyecto académico &middot; Instituto Certus &middot; Grupo 2
+  </div>
+</footer>
 
 <script src="app.js"></script>
 </body>
