@@ -11,7 +11,7 @@ const API_SERVICIOS = API_BASE + '/api/servicios';
 const API_CITAS     = API_BASE + '/api/citas';
 
 // Numero de WhatsApp del consultorio (sin + ni espacios)
-const WHATSAPP = '51987654321';
+const WHATSAPP = '51944148838';
 
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
